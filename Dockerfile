@@ -11,3 +11,16 @@ COPY package*.json ./
 RUN npm install --production
 COPY . .
 RUN npm run build
+
+# Step 2: Use Nginx to serve the static files
+FROM nginx:alpine
+
+# Copy the built files to Nginx's web directory
+COPY --from=build /app/build /usr/share/nginx/html
+
+# Expose port 80 (default)
+EXPOSE 80
+
+# Start Nginx 
+# -g "daemon off;" overrides Nginx’s default behavior and makes it run in the foreground instead of the background.
+CMD ["nginx", "-g", "daemon off;"]
