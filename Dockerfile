@@ -15,6 +15,8 @@ RUN npm run build
 # Step 2: Use Nginx to serve the static files
 FROM nginx:alpine
 
+# Install Certbot inside the container
+RUN apk add --no-cache certbot certbot-nginx openssl
 # Copy the built files to Nginx's web directory
 COPY --from=build /app/build /usr/share/nginx/html
 
